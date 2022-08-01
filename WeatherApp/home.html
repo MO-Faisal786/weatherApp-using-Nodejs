@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/53a4457f2f.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>weather App</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        text-transform: capitalize;
+        text-decoration: none;
+        list-style-type: none;
+        outline: none;
+        border: none;
+        transition: all 0.2s linear;
+        font-family: "Jost", sans-serif;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        font-size: 62.5%;
+      }
+
+      .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-color: #f2f1ee;
+      }
+
+      .box {
+        height: 40rem;
+        width: 26rem;
+        background: #a0b7dc;
+        border-radius: 1.5rem;
+        position: relative;
+        box-shadow: 5px 5px 25px -5px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+      }
+
+      .wave {
+        height: 50rem;
+        width: 50rem;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: -50%;
+        transform-origin: 50% 48%;
+        border-radius: 43%;
+      }
+
+      .wave.-one {
+        opacity: 0.3;
+        z-index: 1;
+        animation: drift 3000ms infinite linear;
+      }
+
+      .wave.-two {
+        animation: drift 5000ms infinite linear;
+        z-index: 2 !important;
+        opacity: 0.2;
+      }
+      .wave.-three {
+        animation: drift 7000ms infinite linear;
+        z-index: 3 !important;
+        opacity: 0.1;
+      }
+
+      @keyframes drift {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .weathercon {
+        position: absolute;
+        top: 15%;
+        left: 37%;
+      }
+
+      .weathercon i {
+        font-size: 7rem;
+      }
+
+      /* h4{
+        display: none;
+      } */
+
+      .info {
+        height: 10rem;
+        width: 100%;
+        position: absolute;
+        z-index: 100;
+        top: 55%;
+        left: 0;
+        right: 0;
+        font-weight: bold;
+      }
+      .info .location i {
+        animation: iconAnimation 3s infinite alternate-reverse linear;
+        margin-right: 1rem;
+        font-size: 4rem;
+      }
+      .info .location {
+        font-size: 3rem;
+        color: #000103;
+      }
+
+      .info .temp {
+        font-size: 3rem;
+        color: #000103;
+        padding-top: 2.5rem;
+      }
+
+      @keyframes iconAnimation {
+        from {
+          transform: translateX(0.7rem);
+        }
+        to {
+          transform: translateX(-0.7rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box">
+        <div class="wave -one"></div>
+        <div class="wave -two"></div>
+        <div class="wave -three"></div>
+
+        <div class="weathercon">
+          <!-- <i class="fa-solid fa-cloud" style="color: #fff;"></i> -->
+          <i class="fa-solid fa-sun" style="color: #eccc68"></i> 
+          
+        </div>
+        <h4 class="status">{%condition%}</h4>
+
+        <div class="info">
+          <h2 class="location">
+            <i class="fa-solid fa-street-view" style="color: #000103"></i
+            >{%location%},{%country%}
+          </h2>
+          <p id="date"></p>
+          <h1 class="temp">{%tempVal%}&#176;C</h1>
+          <h3 class="tempmin_max">
+            Min {%tempMin%}&#176;C | Max {%tempMax%}&#176;C
+          </h3>
+        </div>
+      </div>
+    </div>
+    <script>
+      const curDate = document.getElementById("date");
+let weathercon = document.getElementsByClassName("weathercon");
+let tempStatus = document.getElementsByClassName('status').value;
+
+// if(tempStatus=='Clouds'){
+  weathercon.innerHTML = '<i class="fa-solid fa-cloud" style="color: #fff"></i>';
+// }
+
+const getCurrentDay = () => {
+  const weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let currentTime = new Date();
+let day = weekday[currentTime.getDay()];
+return day;
+};
+
+const getCurrentTime = () => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  let now = new Date();
+  let month = months[now.getMonth()];
+  let date = now.getDate();
+
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  
+  let period = 'AM';
+  if(hours > 11){
+    period = 'PM';
+    if(hours > 12)hours -= 12;
+  }
+  if(minutes < 10){
+    minutes = "0" + minutes;
+  }
+
+  let realdate = `${month}/${date} | ${hours}:${minutes} ${period}`
+  return realdate;
+
+};
+
+curDate.innerHTML = `${getCurrentDay()} | ${getCurrentTime()}`;
+
+
+    </script>
+  </body>
+</html>
